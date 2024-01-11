@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+    <title>Pozície</title>
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Pozície</h1>
+
+    <button class="add-button" onclick="openNewPositionPopup()">Pridať pozíciu</button>
+
+    <table class="list-table" id="chips-table">
+        <thead>
+            <tr>
+                <th>Pozícia</th>
+                <th>Aktívna</th>
+                <th>Vytvorená</th>
+                <th>Upravená</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for position in all_positions %}
+            <tr onclick="openPositionUpdate('{{ position.id }}')">
+                <td>{{ position.name|default_if_none:"" }}</td>
+                <td>{% if position.active %}1{% else %}0{% endif %}</td>
+                <td>{{ position.created|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ position.modified|date:"d.m.Y, H:i:s" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>var json_position_data = {{ json_position_data|safe }};</script>
+    <script src="{% static 'scripts/positions.js' %}"></script>
+{% endblock %}

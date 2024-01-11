@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block headline %}
+<h4>BeaconReaders List</h4>
+{% endblock %}
+{% block content %}
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">name</th>
+                <th scope="col">uid</th>
+                <th scope="col">last_connected</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for BeaconReaders in BeaconReaderss %}
+            <tr>
+                <td>{{ BeaconReaders.name|default_if_none:"--" }}</td>
+                <td>{{ BeaconReaders.uid }}</td>
+                <td>{{ BeaconReaders.last_connected|date:'Y-m-d H:i:s' }}</td>
+                <td><a type="button" class="btn btn-warning"
+                        href="/tables/BeaconReaders-update/{{ BeaconReaders.id }}">Update</a>
+                    <a type="button" class="btn btn-danger"
+                        href="/tables/BeaconReaders-delete/{{ BeaconReaders.id }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a type="button" class="btn btn-success" href="{%url 'BeaconReaders-create' %}">Create</a>
+</div>
+{% endblock %}

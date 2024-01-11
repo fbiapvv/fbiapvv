@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+    <title>Zoznam kalibrácií</title>
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Kalibrácie</h1>
+
+    <button class="add-button" onclick="openNewCalibrationPopup()">Pridať kalibráciu</button>
+
+    <table class="list-table" id="chips-table">
+        <thead>
+            <tr>
+                <th>Čip</th>
+                <th>Pozícia</th>
+                <th>Od</th>
+                <th>Do</th>
+                <th>Vytvorená</th>
+                <th>Upravená</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for calibration in all_calibrations %}
+            <tr onclick="openCalibrationUpdate('{{ calibration.id }}')">
+                <td>{{ calibration.chip.name }}</td>
+                <td>{{ calibration.position.name }}</td>
+                <td>{{ calibration.datetime_from|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ calibration.datetime_to|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ calibration.created|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ calibration.modified|date:"d.m.Y, H:i:s" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        var json_calibration_data = {{ json_calibration_data|safe }};
+        var json_chip_names = {{ json_chip_names|safe }};
+        var json_positions = {{ json_positions|safe }};
+    </script>
+    <script src="{% static 'scripts/calibration_list.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+    <title>Zoznam čítačiek</title>
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Čítačky</h1>
+
+    <table class="list-table" id="chips-table">
+        <thead>
+            <tr>
+                <th>Názov</th>
+                <th>UID</th>
+                <th>Posledné pripojenie</th>
+                <th>Vytvorená</th>
+                <th>Upravená</th>
+                <th>Aktívna</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reader in all_readers %}
+            <tr onclick="openReaderUpdate('{{ reader.id }}')">
+                <td>{{ reader.name|default_if_none:"" }}</td>
+                <td>{{ reader.uid|default_if_none:"" }}</td>
+                <td>{{ reader.last_connected|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ reader.created|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ reader.modified|date:"d.m.Y, H:i:s" }}</td>
+                <td>{% if reader.active %}1{% else %}0{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        var json_readers_data = {{ json_readers_data|safe }};
+    </script>
+    <script src="{% static 'scripts/readers.js' %}"></script>
+{% endblock %}

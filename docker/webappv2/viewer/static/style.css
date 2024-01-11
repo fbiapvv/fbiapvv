@@ -1,0 +1,214 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    text-align: center;
+    background-color: #333; /* Background color for the navbar */
+    padding: 10px 0; /* Adjust padding as needed */
+    margin-bottom: 60px;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px; /* Adjust the maximum width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+.navbar-button {
+    text-decoration: none;
+    color: #fff; /* Text color for the buttons */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: 1px solid #fff; /* Add a border to the buttons */
+    border-radius: 5px; /* Add rounded corners to the buttons */
+}
+
+.navbar-button:hover {
+    background-color: #555; /* Background color on hover */
+}
+
+table.list-table {
+    margin-left: 50px;
+    width: 94%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add some spacing from the content above */
+    text-align: center;
+}
+
+/* Style for table headers in the specific table */
+table.list-table th {
+    background-color: #f2f2f2; /* Light gray background */
+    color: #333; /* Text color */
+    padding: 10px;
+    text-align: center;
+    cursor: default;
+}
+
+/* Style for alternating rows in the specific table */
+table.list-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* White background for even rows */
+}
+
+table.list-table tr:nth-child(odd) {
+    background-color: white; /* Light gray background for odd rows */
+}
+
+/* Style for table cells in the specific table */
+table.list-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Add a bottom border for cell separation */
+}
+
+/* Hover effect for table rows in the specific table */
+table.list-table tr:hover {
+    background-color: #dcdcdc;/* Slightly darker gray when hovering */
+    cursor: pointer;
+}
+
+.add-button {
+    margin-left: 50px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: transparent;
+    transition: 0.2s;
+}
+
+.add-button:hover {
+    background-color: #e7e2e2;
+}
+
+#search-input {
+    font-size: 18px;
+    width: 150px;
+    margin-left: 20px;
+}
+
+.page-title {
+    margin-left: 50px;
+    margin-botton: 0px;
+}
+
+.swal2-input-container {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: space-between;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-right: 5px;
+    font-size: 18px;
+}
+
+.swal2-input-container-active {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#swal-input-last-read,
+#last_read {
+    font-size: 18px;
+    width: 279px;
+}
+
+.swal2-html-container label,
+.swal2-html-container input,
+.swal2-checkbox {
+    margin: 3px 0;
+    padding: 3px 0;
+}
+
+#chips-table_wrapper {
+    margin-left: 50px;
+    width: 94%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add some spacing from the content above */
+    text-align: center;
+}
+
+div:where(.swal2-container) .swal2-input-container-active .swal2-input {
+    height: 18px;
+}
+
+#swal-input-chip,
+#swal-input-position {
+    width: 313px;
+    margin-bottom: 4px;
+}
+
+/* Pagination styles */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.step-links {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.step-links a {
+    color: #333;
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.current-page {
+    display: inline-block;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.search-form-loadedtags {
+    display: flex;
+    margin-left: 50px;
+}
+
+.search-form-loadedtags input {
+    margin-right: 10px;  /* Add space below each input field */
+}
+
+.search-button-loadedtags {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    height: 30px; /* Adjust the height as needed */
+    width: auto; /* Adjust the width as needed */
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.search-button-loadedtags:hover {
+    background-color: #555;
+}
+
+.info-button {
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    margin-left: 10px;
+}
+
+.info-popup {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+  /* Add your desired styling here */
+}
+
+.form-info-container {
+    display: flex;
+}

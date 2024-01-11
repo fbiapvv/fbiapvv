@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+    <title>Načítané čipy</title>
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Načítané čipy</h1>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if loaded_chips.has_previous %}
+                <a href="?page=1{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    &laquo; prvá
+                </a>
+                <a href="?page={{ loaded_chips.previous_page_number }}{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    predošlá
+                </a>
+            {% endif %}
+
+            <span class="current-page">
+                Strana {{ loaded_chips.number }} - {{ loaded_chips.paginator.num_pages }}
+            </span>
+
+            {% if loaded_chips.has_next %}
+                <a href="?page={{ loaded_chips.next_page_number }}{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    ďalšia
+                </a>
+                <a href="?page={{ loaded_chips.paginator.num_pages }}{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    posledná &raquo;
+                </a>
+            {% endif %}
+        </span>
+        <p>{{ loaded_chips.start_index }} - {{ loaded_chips.end_index }}  ({{ loaded_chips.paginator.count }})</p>
+    </div>
+
+    <div class="form-info-container">
+        <form class="search-form-loadedtags" method="get" action="">
+            {{ form.as_p }}
+            <button class="search-button-loadedtags" type="submit">Vyhľadaj</button>
+        </form>
+        <button class="info-button" onclick="openInfo()">
+            <img src="{% static 'images/info.png' %}" alt="Information" title="informácie">
+        </button>
+    </div>
+
+    <div id="info-popup" class="info-popup"></div>
+
+    <table class="list-table" id="chips-table">
+        <thead>
+            <tr>
+                <th>Čítačka</th>
+                <th>Čip</th>
+                <th>RSSI</th>
+                <th>Posledné načítanie</th>
+                <th>Vytvorené</th>
+                <th>Upravené</th>
+                <th>Aktívne</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in loaded_chips_data %}
+                <tr>
+                    <td>{{ data.reader_name|default_if_none:"" }}</td>
+                    <td>{{ data.tag_name|default_if_none:"" }}</td>
+                    <td>{{ data.rssi|default_if_none:"" }}</td>
+                    <td>{{ data.read_datetime|date:"d.m.Y H:i:s" }}</td>
+                    <td>{{ data.created|date:"d.m.Y H:i:s" }}</td>
+                    <td>{{ data.modified|date:"d.m.Y H:i:s" }}</td>
+                    <td>{{ data.active|default_if_none:"" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if loaded_chips.has_previous %}
+                <a href="?page=1{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    &laquo; prvá
+                </a>
+                <a href="?page={{ loaded_chips.previous_page_number }}{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    predošlá
+                </a>
+            {% endif %}
+
+            <span class="current-page">
+                Strana {{ loaded_chips.number }} - {{ loaded_chips.paginator.num_pages }}
+            </span>
+
+            {% if loaded_chips.has_next %}
+                <a href="?page={{ loaded_chips.next_page_number }}{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    ďalšia
+                </a>
+                <a href="?page={{ loaded_chips.paginator.num_pages }}{% if filter_parameters.reader_name %}&reader_name={{ filter_parameters.reader_name }}{% endif %}{% if filter_parameters.chip_name %}&chip_name={{ filter_parameters.chip_name }}{% endif %}{% if filter_parameters.rssi %}&rssi={{ filter_parameters.rssi }}{% endif %}{% if filter_parameters.read_datetime %}&read_datetime={{ filter_parameters.read_datetime }}{% endif %}{% if filter_parameters.created %}&created={{ filter_parameters.created }}{% endif %}{% if filter_parameters.modified %}&modified={{ filter_parameters.modified }}{% endif %}">
+                    posledná &raquo;
+                </a>
+            {% endif %}
+        </span>
+        <p>{{ loaded_chips.start_index }} - {{ loaded_chips.end_index }}  ({{ loaded_chips.paginator.count }})</p>
+    </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static 'scripts/loaded_chips.js' %}"></script>
+{% endblock %}

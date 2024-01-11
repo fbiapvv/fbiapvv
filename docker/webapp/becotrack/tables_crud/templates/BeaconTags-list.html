@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+<h4>BeaconTags List</h4>
+{% block headline %}
+<h4>BeaconTags List</h4>
+{% endblock %} {% block content %}
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">name</th>
+                <th scope="col">uid</th>
+                <th scope="col">last_rssi</th>
+                <th scope="col">local_name</th>
+                <th scope="col">UUIDs</th>
+                <th scope="col">last_read</th>
+                <th scope="col">active</th>
+                <th class="text-end" scope="col">
+                    <a
+                        type="button"
+                        id="DeleteAllInactive"
+                        class="btn btn-danger"
+                        onclick="sweetConfirmDeleteAll(event)"
+                        >Delete All</a
+                    >
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for BeaconTags in BeaconTagss %}
+            <tr>
+                <td>{{ BeaconTags.name|default_if_none:"--" }}</td>
+                <td>{{ BeaconTags.uid }}</td>
+                <td>
+                    {% if BeaconTags.last_rssi == "-999" %} -- {% else %}
+                    {{BeaconTags.last_rssi}} {% endif %}
+                </td>
+                <td>{{ BeaconTags.local_name|default_if_none:"--" }}</td>
+                <td>{{ BeaconTags.UUIDs|default_if_none:"--" }}</td>
+                <td>{{ BeaconTags.last_read|date:'Y-m-d H:i:s' }}</td>
+                <td>{{ BeaconTags.active|yesno:"1,0" }}</td>
+                <td class="text-end">
+                    <a
+                        type="button"
+                        class="btn btn-warning"
+                        href="/tables/BeaconTags-update/{{ BeaconTags.id }}"
+                        >Update</a
+                    >
+                    <a
+                        type="button"
+                        class="btn btn-danger"
+                        onclick="sweetConfirmDelete(event, '{{ BeaconTags.id }}')"
+                        >Delete</a
+                    >
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a type="button" class="btn btn-success" href="{%url 'BeaconTags-create' %}"
+        >Create</a
+    >
+</div>
+<script>
+    function sweetConfirmDeleteAll(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You can delete all inactive tags!",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.value) {
+                window.location.href = "/tables/BeaconTags-delete/all";
+            }
+        });
+    }
+    function sweetConfirmDelete(e, _id) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You can delete all inactive tags!",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.value) {
+                window.location.href = "/tables/BeaconTags-delete/" + _id;
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,99 @@
+version: '3.5'
+services:
+  becotrack_udpserver:
+    image: morfo/becotrack_udpserver:latest
+    restart: always
+    environment:
+      - SENDTOAPI=1
+    depends_on:
+      - becotrack_djangoweb
+    volumes:
+      - ./docker_files/logs:/usr/src/app/logs
+      - ./udplisteningbeacons:/usr/src/app
+    ports:
+      - 26573:26573/udp
+    networks:
+      - becotrack_network
+
+  frontail:
+    image: mthenw/frontail
+    volumes:
+      - ./docker_files/logs:/app/logs
+    restart: always
+    ports:
+      - 9001:9001
+    command: [ "frontail", "/app/logs/udplisteneribeacon" ]
+    networks:
+      - becotrack_network
+
+  db:
+    build:
+      context: ./db-15001_15002
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 15001:3306
+    environment:
+      MYSQL_DATABASE: "becotrack"
+      MYSQL_ROOT_PASSWORD: "becotrack"
+      MYSQL_USER: "becotrack"
+      MYSQL_PASSWORD: "becotrack"
+      MYSQL_ROOT_HOST: "%"
+      MARIADB_INITDB_SKIP_TZINFO: "true"
+      TZ: "Europe/Bratislava"
+    networks:
+      - becotrack_network
+
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      TZ: "Europe/Bratislava"
+    ports:
+      - 15002:8080
+    networks:
+      - becotrack_network
+
+  # becotrack_ntpserver:
+  #   image: morfo/becotrack_ntpserver:latest
+  #   restart: always
+  #   ports:
+  #     - 123:123/udp
+  #   networks:
+  #     - becotrack_network
+
+  becotrack_djangoweb:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: "Europe/Bratislava"
+    depends_on:
+      - db
+    volumes:
+      - ./webapp/becotrack:/usr/src/app
+    ports:
+      - 8000:8000
+    networks:
+      - becotrack_network
+
+  becotrack_djangoweb_v2:
+    build:
+      context: ./webappv2
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: "Europe/Bratislava"
+    depends_on:
+      - db
+    volumes:
+      - ./webappv2:/usr/src/app
+    ports:
+      - 8080:8000
+    networks:
+      - becotrack_network
+
+networks:
+  becotrack_network:
+    name: becotrack_network

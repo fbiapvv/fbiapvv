@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+    <title>Zoznam čipov</title>
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Čipy</h1>
+
+    <button class="add-button" onclick="openNewChipPopup()">Pridať čip</button>
+
+    <table class="list-table" id="chips-table">
+        <thead>
+            <tr>
+                <th>Názov</th>
+                <th>UID</th>
+                <th>Vytvorený</th>
+                <th>Upravený</th>
+                <th>Aktívny</th>
+                <th>Lokálny názov</th>
+                <th>UUIDs</th>
+                <th>Proximity</th>
+                <th>Presnosť</th>
+                <th>Minor</th>
+                <th>Major</th>
+                <th>tx_power</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chip in all_chips %}
+            <tr onclick="openChipUpdate('{{ chip.id }}')">
+                <td>{{ chip.name|default_if_none:"" }}</td>
+                <td>{{ chip.uid|default_if_none:"" }}</td>
+                <td>{{ chip.created|date:"d.m.Y, H:i:s" }}</td>
+                <td>{{ chip.modified|date:"d.m.Y, H:i:s" }}</td>
+                <td>{% if chip.active %}1{% else %}0{% endif %}</td>
+                <td>{{ chip.local_name|default_if_none:"" }}</td>
+                <td>{{ chip.UUIDs|default_if_none:"" }}</td>
+                <td>{{ chip.proximity|default_if_none:"" }}</td>
+                <td>{{ chip.accuracy|default_if_none:"" }}</td>
+                <td>{{ chip.minor|default_if_none:"" }}</td>
+                <td>{{ chip.major|default_if_none:"" }}</td>
+                <td>{{ chip.tx_power|default_if_none:"" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>var json_chips_data = {{ json_chips_data|safe }};</script>
+    <script src="{% static 'scripts/chip_list.js' %}"></script>
+{% endblock %}

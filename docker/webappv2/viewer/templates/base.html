@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="icon" href="{% static 'chip.png' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'jquery.dataTables.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    {% block content %}{% endblock %}
+
+    <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
+    <script src="{% static 'scripts/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'scripts/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'scripts/moment.min.js' %}"></script>
+    <script>var csrf_token = "{{ csrf_token }}";</script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

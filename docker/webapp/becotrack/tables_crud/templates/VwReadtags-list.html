@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+<h4>BeaconTags List</h4>
+{% block headline %}
+<h4>Beacon Loaded List</h4>
+{% endblock %} {% block content %}
+<div class="card-body">
+    
+    <form action="VwReadtags-list" method="get">
+        {% csrf_token %}
+        <div class="w-50 text-left">
+            <table class="table text-nowrap col-md-7 align-middle">
+                <tr>
+                    <td class="col-md-1">
+                        <label for="read_datetime">DateTime From: </label>
+                    </td>
+                    <td class="col-md-1">
+                        <input id="read_datetime" type="text"
+                        name="read_datetime"
+                        value="{{read_datetime|default_if_none:""}}" />
+                    </td>
+                    <td class="col-md-1">
+                        <button
+                            type="button"
+                            id="set_datetime_now"
+                            name="set_datetime_now"
+                            class="btn btn-primary"
+                        >
+                            Set Datetime NOW()
+                        </button>
+                    </td>
+                    <td class="col-md-2">&nbsp;</td>
+
+                    <td class="col-md-1">
+                        <label for="tag_name">Reader name: </label>
+                    </td>
+                    <td class="col-md-1">
+                        <input id="reader_name" type="text" name="reader_name"
+                        value="{{ reader_name|default_if_none:"" }}" />
+                    </td>
+                    <td class="col-md-1">
+                        <label for="tag_name">Tag name: </label>
+                    </td>
+                    <td class="col-md-1">
+                        <input id="tag_name" type="text" name="tag_name"
+                        value="{{ tag_name|default_if_none:"" }}" />
+                    </td>
+                    <td class="col-md-1">
+                        <button id="apply_btn" type="submit" class="btn btn-primary">
+                            Apply
+                        </button>
+                    </td>
+                    <td></td>
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="copy_btn"
+                            value="copy"
+                        >
+                            Copy
+                        </button>
+                    </td>
+                    <td></td>
+
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="clearfilter_btn"
+                            value="clearfilter"
+                        >
+                            Clear filter
+                        </button>
+                    </td>
+                    <td>
+                        <label>Autorefresh: &lt;</label>
+                        <label id="time">20</label>
+                        <label>s</label>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+
+    <table class="table" id="tbl_for_copy">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">read_datetime</th>
+                <th scope="col">reader_name</th>
+                <th scope="col">tag_name</th>
+                <th scope="col">rssi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for VwReadtags in VwReadtagss %}
+            <tr>
+                <td>{{ VwReadtags.id }}</td>
+                <td>{{ VwReadtags.read_datetime|date:'Y-m-d H:i:s' }}</td>
+                <td>{{ VwReadtags.reader_name|default_if_none:" --" }}</td>
+                <td>{{ VwReadtags.tag_name|default_if_none:" --" }}</td>
+                <td>{{ VwReadtags.rssi }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function formatDatetimeNow() {
+        console.log("your message");
+        var date;
+        date = new Date();
+        date =
+            date.getFullYear() +
+            "-" +
+            ("00" + (date.getMonth() + 1)).slice(-2) +
+            "-" +
+            ("00" + date.getDate()).slice(-2) +
+            " " +
+            ("00" + date.getHours()).slice(-2) +
+            ":" +
+            ("00" + date.getMinutes()).slice(-2) +
+            ":" +
+            ("00" + date.getSeconds()).slice(-2);
+        return date;
+    }
+    // var m = new Date();
+    // var dateString = $.format.date(new Date($.now()), 'yyyy/MM/dd HH:mm:ss');
+    $("#set_datetime_now").click(function () {
+        $("#read_datetime").val(formatDatetimeNow());
+    });
+
+    var copyBtn = document.querySelector("#copy_btn");
+    copyBtn.addEventListener(
+        "click",
+        function () {
+            var urlField = document.querySelector("#tbl_for_copy");
+
+            // create a Range object
+            var range = document.createRange();
+            // set the Node to select the "range"
+            range.selectNode(urlField);
+            // add the Range to the set of window selections
+            window.getSelection().addRange(range);
+
+            // execute 'copy', can't 'cut' in this case
+            document.execCommand("copy");
+        },
+        false
+    );
+
+    var copyBtn = document.querySelector("#clearfilter_btn");
+    copyBtn.addEventListener(
+        "click",
+        function () {
+            $("#read_datetime").val('');
+            $("#tag_name").val('');
+            $("#reader_name").val('');
+            $( "#apply_btn" ).click();
+        },
+        false
+    );
+
+
+    var time = new Date().getTime();
+    $('#time').html("20");
+        $(document.body).bind("mousemove keypress", function (e) {
+            time = new Date().getTime();
+            if (document.getElementById('time').textContent != "20") {
+                $('#time').html("20");
+                console.log("suska");
+            }
+
+
+        });
+
+        function refresh() {
+            var diffTime = new Date().getTime() - time;
+
+            if (document.getElementById('time').textContent == "0")
+                window.location.reload(true);
+            else
+                setTimeout(refresh, 1000);
+
+                console.log(Math.floor(20 - ((diffTime)/1000)));
+            if (Math.floor(20 - ((diffTime)/1000))%5 == 0){
+                $('#time').html(Math.floor(20 - ((diffTime)/1000)));
+            }
+        }
+
+        setTimeout(refresh, 1000);
+</script>
+
+{% endblock %}
